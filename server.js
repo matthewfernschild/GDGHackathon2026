@@ -11,7 +11,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'ai_studio_code.html')); // Use the styled file
+  // REMOVE 'public' from this path - path.join joins from the root
+  res.sendFile(path.join(__dirname, 'public', 'ai_studio_code.html'));
 });
 
 // 2. Setup Cloud Services
