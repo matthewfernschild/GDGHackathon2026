@@ -2,9 +2,17 @@ const express = require('express');
 const multer = require('multer');
 const { Storage } = require('@google-cloud/storage');
 const { Firestore } = require('@google-cloud/firestore');
-const path = require('path');
 
 const app = express();
+
+const path = require('path');
+
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 const port = process.env.PORT || 8080;
 
 const storage = new Storage();
@@ -17,7 +25,6 @@ const upload = multer({
   storage: multer.memoryStorage(),
 });
 
-app.use(express.static('public'));
 
 const uploadToGCS = (file) => {
   return new Promise((resolve, reject) => {
