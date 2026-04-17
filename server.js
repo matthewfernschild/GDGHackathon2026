@@ -9,8 +9,9 @@ const app = express();
 // 1. Tell Express to serve your styled files and index.html
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'ai_studio_code.html')); // Use the styled file
 });
 
 // 2. Setup Cloud Services
