@@ -35,6 +35,11 @@
             background: white;
             border: 1px solid rgba(0, 14, 47, 0.08);
             border-radius: 1rem;
+            transition: transform 0.2s;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
         }
 
         .nav-link {
@@ -73,15 +78,6 @@
                 transform: translateY(0);
             }
         }
-
-        .score-badge {
-            background: #800000;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'JetBrains Mono';
-            font-size: 10px;
-        }
     </style>
 </head>
 
@@ -104,25 +100,27 @@
         </div>
         <div class="flex items-center gap-4 text-xs">
             <span class="mono font-bold opacity-40">RANK: #42</span>
-            <div class="w-8 h-8 rounded-full bg-gray-200 border border-gray-300"></div>
+            <div class="w-8 h-8 rounded-full bg-slate-800 border border-gray-300"></div>
         </div>
     </nav>
 
-    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-6 mt-6 px-4">
+    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-6 mt-6 px-4 pb-12">
 
         <aside class="col-span-12 lg:col-span-3">
             <div class="glass-card p-6 sticky top-24">
-                <h3 class="serif text-xl mb-4 text-[#000E2F]">Calibration</h3>
+                <h3 class="serif text-xl mb-4">Calibration</h3>
                 <form id="profileForm" class="space-y-4">
                     <div>
                         <label class="text-[10px] font-bold mb-1 block uppercase opacity-50">Full Name</label>
                         <input type="text" name="name"
-                            class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-xs" required />
+                            class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-xs"
+                            placeholder="Jonathan Husky" required />
                     </div>
                     <div>
                         <label class="text-[10px] font-bold mb-1 block uppercase opacity-50">UConn Email</label>
                         <input type="email" name="email"
-                            class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-xs" required />
+                            class="w-full bg-gray-50 border border-gray-100 rounded-lg p-2 text-xs"
+                            placeholder="jonathan@uconn.edu" required />
                     </div>
                     <div>
                         <label class="text-[10px] font-bold mb-1 block uppercase opacity-50">Profile Picture</label>
@@ -135,9 +133,8 @@
                             required />
                     </div>
                     <button type="submit"
-                        class="w-full bg-[#800000] text-white text-[11px] font-bold py-2 rounded-lg hover:bg-red-900 transition-colors">
-                        SYNC DATA
-                    </button>
+                        class="w-full bg-[#800000] text-white text-[11px] font-bold py-2 rounded-lg hover:bg-red-900 transition-colors">SYNC
+                        DATA</button>
                 </form>
                 <p id="status"
                     class="text-[10px] mt-4 font-bold mono text-[#800000] text-center uppercase tracking-tighter"></p>
@@ -145,33 +142,37 @@
         </aside>
 
         <main class="col-span-12 lg:col-span-6 space-y-6">
+
             <div id="view-feed" class="view-content active space-y-6">
-                <div class="glass-card p-4 flex gap-4">
-                    <div class="w-10 h-10 bg-gray-100 rounded-full"></div>
-                    <textarea placeholder="Post a hustle win (OA score, referral, project)..."
-                        class="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-1 focus:ring-[#800000]"></textarea>
+                <div class="glass-card p-6 border-l-4 border-blue-600">
+                    <div class="flex gap-3 mb-3">
+                        <div class="w-10 h-10 bg-black rounded flex items-center justify-center font-bold text-white">X
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold">SpaceX <span
+                                    class="text-[9px] opacity-40 font-normal">@spacex_ops</span></h4>
+                            <p class="text-[10px] opacity-50 uppercase font-bold tracking-tight">System Reliability
+                                Intern</p>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-relaxed">Starlink's Ground Station team is looking for UConn CS/EE
+                        sophomores. Must show proficiency in Python and C++.</p>
                 </div>
 
                 <div class="glass-card p-6 border-l-4 border-[#800000]">
-                    <div class="flex justify-between mb-4">
-                        <div class="flex gap-3">
-                            <div
-                                class="w-10 h-10 bg-[#000E2F] rounded text-white flex items-center justify-center font-bold">
-                                S</div>
-                            <div>
-                                <h4 class="text-sm font-bold">Stripe <span
-                                        class="text-[9px] opacity-40 font-normal">@stripe_jobs</span></h4>
-                                <p class="text-[10px] opacity-50 uppercase font-bold tracking-tight">Requires Score 700+
-                                </p>
-                            </div>
+                    <div class="flex gap-3 mb-3">
+                        <div
+                            class="w-10 h-10 bg-[#000E2F] rounded text-white flex items-center justify-center font-bold text-xl">
+                            S</div>
+                        <div>
+                            <h4 class="text-sm font-bold">Stripe <span
+                                    class="text-[9px] opacity-40 font-normal">@stripe_jobs</span></h4>
+                            <p class="text-[10px] opacity-50 uppercase font-bold tracking-tight">Score Requirement: 720+
+                            </p>
                         </div>
                     </div>
-                    <p class="text-sm leading-relaxed mb-4">We are reviewing UConn profiles today. If your Hustle Score
-                        is over 720, you've been fast-tracked for our Backend Infra team.</p>
-                    <div class="bg-[#FFFDF5] p-3 rounded-lg border border-gray-100 flex justify-between items-center">
-                        <span class="text-xs font-bold">Infra Intern (2025)</span>
-                        <button class="bg-[#800000] text-white text-[9px] font-bold px-3 py-1 rounded">APPLY</button>
-                    </div>
+                    <p class="text-sm leading-relaxed">Fast-tracking UConn applications this week. Check the Pipeline
+                        tab for referral availability.</p>
                 </div>
             </div>
 
@@ -185,7 +186,37 @@
                         <p class="text-sm font-bold">Kernel_Husky</p>
                         <p class="text-[9px] opacity-50 uppercase font-bold mb-3">Intern @ Amazon</p>
                         <button
-                            class="w-full py-1.5 border border-[#800000] text-[#800000] text-[9px] font-bold uppercase rounded">Compare
+                            class="w-full py-1.5 border border-[#800000] text-[#800000] text-[9px] font-bold uppercase rounded">View
+                            Stats</button>
+                    </div>
+                    <div class="glass-card p-4 text-center">
+                        <div
+                            class="w-12 h-12 bg-purple-100 rounded-full mx-auto mb-2 flex items-center justify-center font-bold">
+                            JS</div>
+                        <p class="text-sm font-bold">JSON_Statham</p>
+                        <p class="text-[9px] opacity-50 uppercase font-bold mb-3">Intern @ Meta</p>
+                        <button
+                            class="w-full py-1.5 border border-[#800000] text-[#800000] text-[9px] font-bold uppercase rounded">View
+                            Stats</button>
+                    </div>
+                    <div class="glass-card p-4 text-center">
+                        <div
+                            class="w-12 h-12 bg-green-100 rounded-full mx-auto mb-2 flex items-center justify-center font-bold">
+                            AL</div>
+                        <p class="text-sm font-bold">Ada_Lovelace_2</p>
+                        <p class="text-[9px] opacity-50 uppercase font-bold mb-3">Intern @ Google</p>
+                        <button
+                            class="w-full py-1.5 border border-[#800000] text-[#800000] text-[9px] font-bold uppercase rounded">View
+                            Stats</button>
+                    </div>
+                    <div class="glass-card p-4 text-center">
+                        <div
+                            class="w-12 h-12 bg-orange-100 rounded-full mx-auto mb-2 flex items-center justify-center font-bold">
+                            BC</div>
+                        <p class="text-sm font-bold">ByteCode_Billy</p>
+                        <p class="text-[9px] opacity-50 uppercase font-bold mb-3">Intern @ Netflix</p>
+                        <button
+                            class="w-full py-1.5 border border-[#800000] text-[#800000] text-[9px] font-bold uppercase rounded">View
                             Stats</button>
                     </div>
                 </div>
@@ -193,19 +224,51 @@
 
             <div id="view-internships" class="view-content space-y-6">
                 <h3 class="serif text-3xl">Vanguard Pipeline</h3>
-                <div
-                    class="glass-card p-6 flex justify-between items-center hover:border-[#800000] transition-colors cursor-pointer">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gray-50 rounded flex items-center justify-center font-bold text-lg">D
+                <div class="space-y-4">
+                    <div class="glass-card p-6 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gray-50 rounded flex items-center justify-center font-bold text-lg text-blue-500">
+                                DB</div>
+                            <div>
+                                <h4 class="font-bold">Databricks</h4>
+                                <p class="text-xs opacity-50">SWE Intern</p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 class="font-bold">Databricks</h4>
-                            <p class="text-xs opacity-50">Software Engineering Intern (Summer '25)</p>
+                        <div class="text-right">
+                            <p class="mono text-xs font-bold">$10,400/mo</p>
+                            <p class="text-[9px] text-green-600 font-bold uppercase">Referral Live</p>
                         </div>
                     </div>
-                    <div class="text-right">
-                        <p class="mono text-xs font-bold">$10,400/mo</p>
-                        <p class="text-[9px] text-green-600 font-bold uppercase">Referral Available</p>
+                    <div class="glass-card p-6 flex justify-between items-center opacity-80">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gray-50 rounded flex items-center justify-center font-bold text-lg text-red-500">
+                                O</div>
+                            <div>
+                                <h4 class="font-bold">Oracle</h4>
+                                <p class="text-xs opacity-50">Cloud Infra Intern</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="mono text-xs font-bold">$8,200/mo</p>
+                            <p class="text-[9px] text-orange-600 font-bold uppercase">Applied (Pending)</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex justify-between items-center">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 bg-gray-50 rounded flex items-center justify-center font-bold text-lg text-emerald-600">
+                                NV</div>
+                            <div>
+                                <h4 class="font-bold">NVIDIA</h4>
+                                <p class="text-xs opacity-50">CUDA Engineer</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="mono text-xs font-bold">$9,800/mo</p>
+                            <p class="text-[9px] text-blue-600 font-bold uppercase">New Posting</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -219,10 +282,30 @@
                             <th class="p-4">Husky Nickname</th>
                             <th class="p-4">Score</th>
                         </tr>
+                        <tr>
+                            <td class="p-4 mono text-xs font-bold">1</td>
+                            <td class="p-4 font-bold">Binary_Geno</td>
+                            <td class="p-4 mono font-bold">998</td>
+                        </tr>
+                        <tr class="bg-gray-50">
+                            <td class="p-4 mono text-xs font-bold">2</td>
+                            <td class="p-4 font-bold">LeetCode_Lori</td>
+                            <td class="p-4 mono font-bold">945</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 mono text-xs font-bold">3</td>
+                            <td class="p-4 font-bold">DFS_Danny</td>
+                            <td class="p-4 mono font-bold">912</td>
+                        </tr>
                         <tr class="bg-[#FFFDF5] border-l-4 border-[#800000]">
-                            <td class="p-4 mono font-bold text-xs maroon-text">42</td>
+                            <td class="p-4 mono font-bold text-xs">42</td>
                             <td class="p-4 font-bold uppercase">Jonathan_D (You)</td>
                             <td class="p-4 mono font-bold text-[#800000]">742</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 mono text-xs font-bold">43</td>
+                            <td class="p-4 font-bold">Node_Nathan</td>
+                            <td class="p-4 mono font-bold">738</td>
                         </tr>
                     </table>
                 </div>
@@ -231,14 +314,31 @@
 
         <aside class="col-span-12 lg:col-span-3 space-y-6">
             <div class="glass-card p-6">
-                <h4 class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-4">Top Connections</h4>
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-8 h-8 rounded bg-blue-900 text-white flex items-center justify-center font-bold text-[10px]">
-                        G</div>
-                    <div>
-                        <p class="text-xs font-bold">Alumni at Google</p>
-                        <p class="text-[9px] opacity-50 italic">7 referrals possible</p>
+                <h4 class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-4">UConn Alumni Network</h4>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded bg-blue-900 text-white flex items-center justify-center font-bold text-[10px]">
+                            G</div>
+                        <div>
+                            <p class="text-xs font-bold">Google (7)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded bg-black text-white flex items-center justify-center font-bold text-[10px]">
+                            A</div>
+                        <div>
+                            <p class="text-xs font-bold">Apple (3)</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div
+                            class="w-8 h-8 rounded bg-red-600 text-white flex items-center justify-center font-bold text-[10px]">
+                            T</div>
+                        <div>
+                            <p class="text-xs font-bold">Tesla (2)</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -246,7 +346,6 @@
     </div>
 
     <script>
-        // Navigation Logic
         function showView(viewName) {
             document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
@@ -254,32 +353,21 @@
             document.getElementById('nav-' + viewName).classList.add('active');
         }
 
-        // Integrated Upload Logic from index.html
         document.getElementById('profileForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const statusEl = document.getElementById('status');
             statusEl.innerText = '📡 ESTABLISHING CONNECTION...';
-            statusEl.style.color = '#800000';
-
             const formData = new FormData(e.target);
-
             try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
-
+                const response = await fetch('/upload', { method: 'POST', body: formData });
                 if (response.ok) {
                     statusEl.innerText = '✅ CALIBRATION SUCCESSFUL';
                     statusEl.style.color = '#16a34a';
                 } else {
-                    const errorText = await response.text();
                     statusEl.innerText = '❌ SYNC FAILED';
-                    console.error('Upload Error:', errorText);
                 }
             } catch (err) {
                 statusEl.innerText = '⚠️ NETWORK TIMEOUT';
-                console.error('Fetch Error:', err);
             }
         });
     </script>
