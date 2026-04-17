@@ -58,6 +58,6 @@ app.post('/upload', upload.fields([{ name: 'profilePicture', maxCount: 1 }, { na
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is successfully listening on port ${port}`);
 });
