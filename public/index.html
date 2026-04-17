@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Upload</title>
+</head>
+<body>
+    <form id="profileForm">
+        <input type="text" name="name" placeholder="Name" required /><br><br>
+        <input type="email" name="email" placeholder="Email" required /><br><br>
+        
+        <label>Profile Picture:</label>
+        <input type="file" name="profilePicture" accept="image/*" required /><br><br>
+        
+        <label>Resume PDF:</label>
+        <input type="file" name="resumePdf" accept="application/pdf" required /><br><br>
+        
+        <button type="submit">Submit</button>
+    </form>
+    <p id="status"></p>
+
+    <script>
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            document.getElementById('status').innerText = 'Uploading...';
+            
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                document.getElementById('status').innerText = await response.text();
+            } catch (err) {
+                document.getElementById('status').innerText = 'Upload failed.';
+            }
+        });
+    </script>
+</body>
+</html>
