@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HustleGraph | UConn CS Command Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root { --uconn-navy: #000E2F; --maroon: #800000; --cream: #FFFDF5; }
+        body { background-color: var(--cream); color: var(--uconn-navy); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .serif { font-family: 'Playfair Display', serif; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-card { background: white; border: 1px solid rgba(0, 14, 47, 0.08); border-radius: 1rem; }
+        
+        /* Navigation Active States */
+        .nav-link { cursor: pointer; transition: all 0.2s; border-bottom: 2px solid transparent; padding-bottom: 4px; }
+        .nav-link:hover { color: var(--maroon); }
+        .nav-link.active { color: var(--maroon); border-color: var(--maroon); opacity: 1; }
+
+        /* Hidden Class for View Swapping */
+        .view-content { display: none; }
+        .view-content.active { display: block; animation: fadeIn 0.3s ease-out; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .score-badge { background: #800000; color: white; padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono'; font-size: 10px; }
+        .tag-active { background: #800000; color: white; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- TOP NAVIGATION -->
+    <nav class="h-16 border-b border-gray-100 bg-white/80 backdrop-blur-md sticky top-0 z-50 flex items-center px-8 justify-between">
+        <div class="flex items-center gap-12">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-[#800000] rounded flex items-center justify-center text-white serif font-bold">H</div>
+                <span class="font-black tracking-tighter uppercase text-sm">HustleGraph</span>
+            </div>
+            <div class="hidden md:flex gap-8 text-[11px] font-bold uppercase tracking-widest opacity-60">
+                <span onclick="showView('feed')" id="nav-feed" class="nav-link active">Feed</span>
+                <span onclick="showView('network')" id="nav-network" class="nav-link">Network</span>
+                <span onclick="showView('internships')" id="nav-internships" class="nav-link">Internships</span>
+                <span onclick="showView('leaderboard')" id="nav-leaderboard" class="nav-link">Leaderboard</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-4 text-xs">
+            <span class="mono font-bold opacity-40">RANK: #42</span>
+            <div class="w-8 h-8 rounded-full bg-gray-200 border border-gray-300"></div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-12 gap-6 mt-6 px-4">
+        
+        <!-- LEFT PANEL: THE ONBOARDING / PROFILE CALIBRATION (STAYS FIXED) -->
+        <aside class="col-span-12 lg:col-span-3 space-y-4">
+            <div class="glass-card p-6">
+                <h3 class="serif text-xl mb-4">Calibration</h3>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between text-[10px] font-bold mb-2 uppercase opacity-50">
+                            <span>Cumulative GPA</span>
+                            <span class="maroon-text" id="gpa-display">3.82</span>
+                        </div>
+                        <input type="range" class="w-full accent-[#800000]" min="2.0" max="4.0" step="0.1" value="3.8" oninput="document.getElementById('gpa-display').innerText = this.value">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-bold mb-3 block uppercase opacity-50">Target Sectors</label>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag-active px-3 py-1 rounded text-[9px] font-bold uppercase cursor-pointer">Fintech</span>
+                            <span class="tag-active px-3 py-1 rounded text-[9px] font-bold uppercase cursor-pointer">Systems</span>
+                            <span class="border border-[#800000] maroon-text px-3 py-1 rounded text-[9px] font-bold uppercase cursor-pointer">AI/ML</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-gray-50">
+                        <label class="text-[10px] font-bold mb-2 block uppercase opacity-50">Hustle Status</label>
+                        <p class="text-xs font-medium">Currently: <span class="maroon-text font-bold uppercase">Active Hunt</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="glass-card p-6 bg-[#800000] text-white">
+                <p class="text-[10px] font-bold uppercase opacity-60 mb-1">Your Live Score</p>
+                <h2 class="serif text-5xl">742</h2>
+                <p class="text-[10px] mt-4 opacity-80 uppercase tracking-widest font-bold">↑ Top 12% in Storrs</p>
+            </div>
+        </aside>
+
+        <!-- CENTER PANEL: DYNAMIC CONTENT AREA -->
+        <main class="col-span-12 lg:col-span-6 space-y-6">
+
+            <!-- VIEW: FEED -->
+            <div id="view-feed" class="view-content active space-y-6">
+                <div class="glass-card p-4 flex gap-4">
+                    <div class="w-10 h-10 bg-gray-100 rounded-full"></div>
+                    <textarea placeholder="Post a hustle win (OA score, referral, project)..." class="w-full bg-gray-50 border-none rounded-xl p-3 text-sm focus:ring-1 focus:ring-[#800000]"></textarea>
+                </div>
+                
+                <!-- Employer Post -->
+                <div class="glass-card p-6 border-l-4 border-[#800000]">
+                    <div class="flex justify-between mb-4">
+                        <div class="flex gap-3">
+                            <div class="w-10 h-10 bg-[#000E2F] rounded text-white flex items-center justify-center font-bold">S</div>
+                            <div>
+                                <h4 class="text-sm font-bold">Stripe <span class="text-[9px] opacity-40 font-normal">@stripe_jobs</span></h4>
+                                <p class="text-[10px] opacity-50 uppercase font-bold tracking-tight">Requires Score 700+</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm leading-relaxed mb-4">We are reviewing UConn profiles today. If your Hustle Score is over 720, you've been fast-tracked for our Backend Infra team.</p>
+                    <div class="bg-[#FFFDF5] p-3 rounded-lg border border-gray-100 flex justify-between items-center">
+                        <span class="text-xs font-bold">Infra Intern (2025)</span>
+                        <button class="bg-[#800000] text-white text-[9px] font-bold px-3 py-1 rounded">APPLY</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: NETWORK -->
+            <div id="view-network" class="view-content space-y-6">
+                <h3 class="serif text-3xl">Your Network</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-card p-4 text-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full mx-auto mb-2 flex items-center justify-center font-bold">KH</div>
+                        <p class="text-sm font-bold">Kernel_Husky</p>
+                        <p class="text-[9px] opacity-50 uppercase font-bold mb-3">Intern @ Amazon</p>
+                        <button class="w-full py-1.5 border border-[#800000] maroon-text text-[9px] font-bold uppercase rounded">Compare Stats</button>
+                    </div>
+                    <div class="glass-card p-4 text-center">
+                        <div class="w-12 h-12 bg-red-100 rounded-full mx-auto mb-2 flex items-center justify-center font-bold">AJ</div>
+                        <p class="text-sm font-bold">Algo_Jonathan</p>
+                        <p class="text-[9px] opacity-50 uppercase font-bold mb-3">Intern @ Travelers</p>
+                        <button class="w-full py-1.5 border border-[#800000] maroon-text text-[9px] font-bold uppercase rounded">Compare Stats</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: INTERNSHIPS -->
+            <div id="view-internships" class="view-content space-y-6">
+                <div class="flex justify-between items-end">
+                    <h3 class="serif text-3xl">Vanguard Pipeline</h3>
+                    <span class="text-[10px] font-bold maroon-text uppercase tracking-widest">700+ Score Required</span>
+                </div>
+                <div class="space-y-4">
+                    <div class="glass-card p-6 flex justify-between items-center hover:border-[#800000] transition-colors cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gray-50 rounded flex items-center justify-center font-bold text-lg">D</div>
+                            <div>
+                                <h4 class="font-bold">Databricks</h4>
+                                <p class="text-xs opacity-50">Software Engineering Intern (Summer '25)</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="mono text-xs font-bold">$10,400/mo</p>
+                            <p class="text-[9px] text-green-600 font-bold uppercase">Referral Available</p>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 flex justify-between items-center opacity-50 grayscale cursor-not-allowed">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-gray-50 rounded flex items-center justify-center font-bold text-lg">J</div>
+                            <div>
+                                <h4 class="font-bold">Jane Street</h4>
+                                <p class="text-xs">Quantitative Trader Intern</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="mono text-xs font-bold text-red-700">LOCKED</p>
+                            <p class="text-[9px] uppercase font-bold">Score 850+ Needed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: LEADERBOARD -->
+            <div id="view-leaderboard" class="view-content space-y-6">
+                <h3 class="serif text-3xl">Storrs Elite Ranking</h3>
+                <div class="glass-card overflow-hidden">
+                    <table class="w-full text-left text-sm">
+                        <tr class="bg-gray-50 text-[10px] font-bold uppercase opacity-40">
+                            <th class="p-4">Rank</th>
+                            <th class="p-4">Husky Nickname</th>
+                            <th class="p-4">Internships</th>
+                            <th class="p-4">Score</th>
+                        </tr>
+                        <tr class="border-b border-gray-50">
+                            <td class="p-4 mono font-bold text-xs">01</td>
+                            <td class="p-4 font-bold">Kernel_Husky <span class="score-badge ml-2">890</span></td>
+                            <td class="p-4 text-xs">3 (Amazon, Meta)</td>
+                            <td class="p-4 mono font-bold maroon-text">890</td>
+                        </tr>
+                        <tr class="bg-[#FFFDF5] border-l-4 border-[#800000]">
+                            <td class="p-4 mono font-bold text-xs maroon-text">42</td>
+                            <td class="p-4 font-bold maroon-text uppercase">Jonathan_D (You)</td>
+                            <td class="p-4 text-xs italic">0</td>
+                            <td class="p-4 mono font-bold maroon-text">742</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- RIGHT PANEL: ALUMNI & TRENDING (3/12) -->
+        <aside class="col-span-12 lg:col-span-3 space-y-6">
+            <div class="glass-card p-6">
+                <h4 class="text-[10px] font-bold uppercase tracking-widest opacity-40 mb-4">Top Connections</h4>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded bg-blue-900 text-white flex items-center justify-center font-bold text-[10px]">G</div>
+                        <div>
+                            <p class="text-xs font-bold">Alumni at Google</p>
+                            <p class="text-[9px] opacity-50 italic">7 referrals possible</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-6 bg-[#000E2F] rounded-2xl text-white">
+                <h4 class="serif text-lg mb-2">Hustle Clash</h4>
+                <p class="text-[10px] opacity-60 leading-relaxed">
+                    Kernel_Husky's score is <span class="text-white font-bold">+148 higher</span> than yours. 
+                    Most of the difference comes from <strong>Networking Data</strong>.
+                </p>
+                <button class="mt-4 w-full py-2 bg-white/10 hover:bg-white/20 text-[10px] font-bold uppercase rounded transition-all">Close the Gap</button>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        function showView(viewName) {
+            // Hide all views
+            const views = document.querySelectorAll('.view-content');
+            views.forEach(v => v.classList.remove('active'));
+
+            // Deactivate all nav links
+            const links = document.querySelectorAll('.nav-link');
+            links.forEach(l => l.classList.remove('active'));
+
+            // Show current view
+            document.getElementById('view-' + viewName).classList.add('active');
+            
+            // Set nav link as active
+            document.getElementById('nav-' + viewName).classList.add('active');
+        }
+    </script>
+</body>
+</html>
